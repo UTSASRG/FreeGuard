@@ -27,3 +27,28 @@ your code open-source), commercial users of FreeGuard can purchase non-GPL
 licenses through the University of Texas at San Antonio.
 To obtain a license, please contact Tongping Liu directly
 (tongping.liu@utsa.edu) and copy Sam Silvestro (sam.silvestro@utsa.edu).
+
+
+Building FreeGuard
+-------------------------
+
+To build FreeGuard, simply run `make SSE2RNG=1`.
+
+	% make SSE2RNG=1
+
+This will incorporate Intel's fast, SSE2-optimized random number generator (RNG)
+into FreeGuard, which will dramatically increase its performance in some applications.
+
+Alternatively, when built with no additional flags (i.e., simply `make`), FreeGuard
+will utilize the default C library rand() function instead.
+
+You can then use FreeGuard by either linking it to your executable, or
+by setting the `LD_PRELOAD` environment variable, as in:
+
+	% export LD_PRELOAD=/path/to/libfreeguard.so
+
+After doing so, all executables run in the same shell will automatically utilize
+FreeGuard. Alternatively, we can specify that only a given application be linked to
+FreeGuard, like so:
+
+	% LD_PRELOAD=/path/to/libfreeguard.so /app/to/run

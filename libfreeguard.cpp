@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * 
- * @file   libfreechecker.cpp: main file, includes interception functions.
+ * @file   libfreeguard.cpp: main file, includes memory interception functions.
  * @author Tongping Liu <http://www.cs.utsa.edu/~tongpingliu/>
  * @author Sam Silvestro <sam.silvestro@utsa.edu>
  */
@@ -42,9 +42,9 @@ intptr_t globalStackAddr;
 
 typedef int (*main_fn_t)(int, char**, char**);
 
-extern "C" int __libc_start_main(main_fn_t, int, char**, void (*)(), void (*)(), void (*)(), void*) __attribute__((weak, alias("freechecker_libc_start_main")));
+extern "C" int __libc_start_main(main_fn_t, int, char**, void (*)(), void (*)(), void (*)(), void*) __attribute__((weak, alias("freeguard_libc_start_main")));
 
-extern "C" int freechecker_libc_start_main(main_fn_t main_fn, int argc, char** argv, void (*init)(), void (*fini)(), void (*rtld_fini)(), void* stack_end) {
+extern "C" int freeguard_libc_start_main(main_fn_t main_fn, int argc, char** argv, void (*init)(), void (*fini)(), void (*rtld_fini)(), void* stack_end) {
 	// allocate stack area
 	size_t stackSize = (size_t)STACK_SIZE * MAX_THREADS;
 	if((globalStackAddr = (intptr_t)MM::mmapAllocatePrivate(stackSize)) == 0) {

@@ -1,6 +1,6 @@
 SRCS = real.cpp							\
 			 xthread.cpp          \
-			 libfreechecker.cpp
+			 libfreeguard.cpp
 
 INCS = bibopheap.hh				\
 		bigheap.hh						\
@@ -53,7 +53,7 @@ SRCS += rng/arc4random.o rng/arc4random_uniform.o
 TARGETS = arc4random.o arc4random_uniform.o $(TARGETS)
 endif
 
-TARGETS = libfreechecker.so
+TARGETS = libfreeguard.so
 
 all: $(TARGETS)
 
@@ -64,8 +64,8 @@ rng/arc4random_uniform.o: rng/arc4random_uniform.c
 	clang -fPIC -O2 -DNDEBUG -I. -c rng/arc4random_uniform.c -o rng/arc4random_uniform.o
 
 
-libfreechecker.so: $(DEPS)
-	$(CXX) $(CFLAGS) $(INCLUDE_DIRS) -shared -fPIC $(SRCS) -o libfreechecker.so -ldl -lpthread -lrt
+libfreeguard.so: $(DEPS)
+	$(CXX) $(CFLAGS) $(INCLUDE_DIRS) -shared -fPIC $(SRCS) -o libfreeguard.so -ldl -lpthread -lrt
 
 clean:
 	rm -f $(TARGETS)
