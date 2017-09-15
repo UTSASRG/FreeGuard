@@ -52,3 +52,13 @@ FreeGuard. Alternatively, we can specify that only a given application be linked
 FreeGuard, like so:
 
 	% LD_PRELOAD=/path/to/libfreeguard.so /app/to/run
+
+
+Technical Information
+---------------------
+
+For technical details of FreeGuard, please refer to [FreeGuard: A
+Faster Secure Heap Allocator](https://arxiv.org/abs/1709.02746),
+by Sam Silvestro, Hongyu Liu, Corey Crosser, Zhiqiang Lin, and Tongping
+Liu. The 24th ACM Conference on Computer and Communications Security
+(CCS'17). Dallas, TX, October 2017.

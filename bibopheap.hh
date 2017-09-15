@@ -75,7 +75,7 @@ private:
 	unsigned long _numBagsPerSubHeapMask;
 	unsigned _numBagsPerHeapShiftBits;
 	
-	class PerThreadBag {
+	class alignas(CACHE_LINE_SIZE) PerThreadBag {
 		public:
 			// Pointing to the freelist objects 
 			FREELIST_TYPE freelist[BIBOP_BAG_SET_SIZE];
@@ -110,13 +110,10 @@ private:
       int ncfree;
       int cflthreshold;
 			
-#ifdef ENABLE_GUARDPAGE
+			#ifdef ENABLE_GUARDPAGE
       size_t guardsize;
       size_t guardoffset;
-			char padding[2];
-#else
-			char padding[56];
-#endif
+			#endif
 	};
 
 	PerThreadBag _threadBag[MAX_ALIVE_THREADS][BIBOP_NUM_BAGS];
