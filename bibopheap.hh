@@ -172,10 +172,6 @@ public:
 		// this particular bitwise AND operation to a modulo operation.
 		assert(__builtin_popcount(BIBOP_BAG_SET_SIZE) == 1);
 
-		// To prevent false sharing of the PerThreadBag global array
-		// we must ensure its size is cache line-aligned.
-		assert((sizeof(PerThreadBag) % CACHE_LINE_SIZE) == 0);
-
 		// Bag size cannot be smaller than the large object threshold.
 		assert(_bibopBagSize >= LARGE_OBJECT_THRESHOLD);
 
