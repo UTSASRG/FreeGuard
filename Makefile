@@ -1,6 +1,7 @@
 SRCS = real.cpp							\
-			 xthread.cpp          \
-			 libfreeguard.cpp
+			 xthread.cpp					\
+			 libfreeguard.cpp			\
+			 rng/sse2rng.c
 
 INCS = bibopheap.hh				\
 		bigheap.hh						\
@@ -21,37 +22,27 @@ DEPS = $(SRCS) $(INCS)
 
 CXX = clang++ 
 
-ifndef DEBUG_LEVEL
-DEBUG_LEVEL = 3
-endif
+CFLAGS = -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer -DCUSTOMIZED_STACK -DMANYBAGS -DSSE2RNG -msse2
+CFLAGS2 = -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer
 
-#CFLAGS += -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer -DDEBUG_LEVEL=$(DEBUG_LEVEL)
-#CFLAGS += -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer -DDEBUG_LEVEL=$(DEBUG_LEVEL) -DCUSTOMIZED_STACK -DENABLE_GUARDPAGE -DCFREELIST
-#CFLAGS += -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer -DDEBUG_LEVEL=$(DEBUG_LEVEL) -DCUSTOMIZED_STACK -DENABLE_GUARDPAGE -DRANDOM_GUARD
-#CFLAGS += -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer -DDEBUG_LEVEL=$(DEBUG_LEVEL) -DCUSTOMIZED_STACK -DENABLE_GUARDPAGE -DRANDOM_GUARD
-CFLAGS += -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer -DNDEBUG -DCUSTOMIZED_STACK -DENABLE_GUARDPAGE -DRANDOM_GUARD -DUSE_CANARY -DFIFO_FREELIST
-CFLAGS2 = -O2 --std=c++11 -g -fno-omit-frame-pointer
-
-# NDEBUG overrules DEBUG_LEVEL macro in log.hh
-ifdef NDEBUG
+ifdef DEBUG_LEVEL
+CFLAGS += -DDEBUG_LEVEL=$(DEBUG_LEVEL)
+else
 CFLAGS += -DNDEBUG
 endif
-#ifdef MANYBAGS
-CFLAGS += -DMANYBAGS
-#endif
+
+ifndef NO_SECURITY
+CFLAGS += -DENABLE_GUARDPAGE -DRANDOM_GUARD -DUSE_CANARY -DFIFO_FREELIST
+endif
 
 INCLUDE_DIRS = -I. -I/usr/include/x86_64-linux-gnu/c++/4.8/ -I./rng
 LIBS     := dl pthread
 
-ifdef SSE2RNG
-CFLAGS += -DSSE2RNG -msse2
-SRCS += rng/sse2rng.c
-endif
-ifdef ARC4RNG
-CFLAGS += -DARC4RNG
-SRCS += rng/arc4random.o rng/arc4random_uniform.o
-TARGETS = arc4random.o arc4random_uniform.o $(TARGETS)
-endif
+#ifdef ARC4RNG
+#CFLAGS += -DARC4RNG
+#SRCS += rng/arc4random.o rng/arc4random_uniform.o
+#TARGETS = arc4random.o arc4random_uniform.o $(TARGETS)
+#endif
 
 TARGETS = libfreeguard.so
 

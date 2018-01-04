@@ -253,15 +253,7 @@ void * xxrealloc(void * ptr, size_t sz) {
 				return NULL;
 		}
 
-		// If the requested new size (plus canary) is less than
-		// or equal to the old size, simply return the object as-is.
-		size_t reqSz;
-		#ifdef USE_CANARY
-		reqSz = sz + 1;
-		#else
-		reqSz = sz;
-		#endif
-		if(oldSize >= reqSz) {
+		if(oldSize >= sz) {
 				return ptr;
 		}
 

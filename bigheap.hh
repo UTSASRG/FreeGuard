@@ -60,14 +60,6 @@ public:
     _xmap.initialize(HashFuncs::hashAddr, HashFuncs::compareAddr, THREAD_MAP_SIZE);
 	} 
 
-  size_t getUsableSize(void * ptr) {
-    bigObjectStatus * objStatus;
-    if(!_xmap.find(ptr, sizeof(void *), &objStatus)) {
-      return 0;
-    }
-    return objStatus->size;
-  }
-
 	// For big objects, we don't have the quarantine list. 
 	// Actually, the size information will be kept until new allocation is 
 	void * allocateAtBigHeap(size_t size) {
